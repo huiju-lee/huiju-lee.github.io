@@ -114,6 +114,8 @@
   .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn.primary { color: #0f1416; } }
   :root[data-theme="dark"] .btn.primary { color: #0f1416; }
+  :root[data-theme="dark"] .fc-text-end { fill: #0f1416; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .fc-text-end { fill: #0f1416; } }
   .btn.primary:hover { opacity: .9; color: #fff; }
   .hero p.lead strong { color: var(--accent-2); font-weight: 600; }
   .contact-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
@@ -180,7 +182,7 @@
   @media (max-width: 760px) { .about-grid { grid-template-columns: 1fr; } }
 
   /* Research cards */
-  .cards { display: grid; grid-template-columns: 1fr; gap: 18px; }
+  .cards { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
   .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 22px; box-shadow: var(--shadow); display: flex; flex-direction: column; }
   .card .meta { font-size: .78rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--accent-2); }
   .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
@@ -195,7 +197,7 @@
   .card ul { margin: 0 0 12px; padding-left: 18px; font-size: .93rem; }
   .card .links { margin-top: auto; display: flex; flex-wrap: wrap; gap: 8px; }
   /* Expandable project cards */
-  .card-main { display: grid; grid-template-columns: 1fr 260px; gap: 24px; align-items: start; }
+  .card-main { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 24px; align-items: start; }
   .card-text ul { margin-bottom: 4px; }
   .card-bottom { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
   .card-bottom .links { margin-top: 0; }
@@ -205,7 +207,8 @@
   .more-arrow { display: inline-block; transition: transform .25s ease; }
   .more-btn[aria-expanded="true"] .more-arrow { transform: rotate(180deg); }
   .card-details { border-top: 1px solid var(--line); margin-top: 18px; padding-top: 18px; }
-  .detail-row { display: grid; grid-template-columns: 110px 1fr; gap: 16px; margin-bottom: 20px; }
+  .detail-row { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 16px; margin-bottom: 20px; }
+  .detail-body { min-width: 0; }
   .detail-row:last-of-type { margin-bottom: 8px; }
   .detail-label { font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-2); padding-top: 3px; }
   .detail-body p { color: var(--text); margin: 0; }
@@ -233,11 +236,72 @@
   .lightbox img { max-width: min(1400px, 100%); max-height: 100%; background: #fff; border-radius: 10px; padding: 12px; }
   .lightbox-close { position: absolute; top: 14px; right: 18px; color: #fff; font-size: 1.8rem; line-height: 1;
                     background: none; border: 0; cursor: pointer; }
+  .detail-body .fig.real.fig-narrow { max-width: 480px; }
+  .card-bottom .links:empty { display: none; }
+  .card-bottom:has(.links:empty) { justify-content: flex-end; }
+  /* Thumbnail for tall images */
+  .fig-tall { display: flex; flex-direction: column; align-items: center; padding: 10px 8px 8px; }
+  .fig-tall img { max-height: 230px; width: auto !important; padding: 0 !important; }
+  .fig-tall figcaption { font-size: .74rem; color: #5b676c; text-align: center; line-height: 1.5; margin-top: 6px; }
+  .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin: 0 3px 0 6px; vertical-align: -1px; }
+  .dot.cr { background: #1d2a8c; } .dot.f { background: #7fcf6e; } .dot.li { background: #c7cbe0; border: 1px solid #9aa0bd; }
+  /* Flowchart */
+  .flowchart { max-width: 760px; overflow-x: auto; margin: 4px 0 4px; }
+  .flowchart svg { display: block; width: 100%; min-width: 540px; height: auto; font-family: "Inter", system-ui, sans-serif; }
+  .fc-step, .fc-start { fill: var(--surface-2); stroke: var(--line); stroke-width: 1.5; }
+  .fc-start { fill: var(--surface); }
+  .fc-adjust { fill: color-mix(in srgb, var(--accent-2) 14%, var(--surface)); stroke: var(--accent-2); stroke-width: 1.5; }
+  .fc-decision { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+  .fc-data { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+  .fc-end { fill: var(--accent); stroke: var(--accent); }
+  .fc-region { fill: none; stroke: var(--line); stroke-width: 1.5; stroke-dasharray: 6 5; }
+  .fc-region-label { fill: var(--muted); font-size: 12px; font-weight: 600; letter-spacing: .04em; }
+  .fc-text { fill: var(--text); font-size: 13.5px; font-weight: 500; }
+  .fc-text-end { fill: #fff; font-weight: 700; }
+  .fc-sub { fill: var(--muted); font-size: 11px; font-weight: 500; }
+  .fc-label { fill: var(--muted); font-size: 12.5px; font-weight: 700; }
+  .fc-arrow { stroke: var(--muted); stroke-width: 1.6; }
+  .fc-head { fill: var(--muted); }
+  /* Figure with a note beside it */
+  .fig-side { display: grid; grid-template-columns: minmax(0, 420px) 1fr; gap: 22px; align-items: center; max-width: 760px; }
+  .fig-note-stat { font-family: "Source Serif 4", serif; font-size: 2rem; font-weight: 700; color: var(--accent); line-height: 1.1; }
+  .fig-note-label { font-size: .82rem; color: var(--muted); margin: 2px 0 10px; }
+  .fig-note p { font-size: .9rem; color: var(--text); margin: 0; }
+  @media (max-width: 760px) { .fig-side { grid-template-columns: 1fr; } }
+  .fig-svg { padding: 8px 8px 6px; display: block; aspect-ratio: auto; min-height: 0; }
+  .fig-svg svg { display: block; width: 100%; height: auto; }
+  .fig-svg figcaption { font-size: .74rem; color: #5b676c; text-align: center; line-height: 1.45; margin-top: 4px; }
+  .fig-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; max-width: 760px; }
+  .fig-pair .fig.real { aspect-ratio: 1 / 1; }
+  .fig-pair .fig.real img { height: 100%; object-fit: contain; }
+  .fig-pair .fig-note-stat { margin-top: 10px; font-size: 1.6rem; }
+  .fig-pair .fig-note-label { margin-bottom: 0; }
+  .fig-cap { font-size: .82rem; color: var(--muted); margin-top: 6px; text-align: center; }
+  .fig-explain { font-size: .9rem; color: var(--text); margin: 14px 0 0 !important; max-width: 760px; }
+  @media (max-width: 600px) { .fig-pair { grid-template-columns: minmax(0, 1fr); } }
+  .fig-pair-auto { grid-template-columns: 1.27fr 1fr; align-items: start; }
+  @media (max-width: 600px) { .fig-pair-auto { grid-template-columns: minmax(0, 1fr); } }
+  .fig-pair-auto .fig.real { aspect-ratio: auto; }
+  .fig-pair-auto .fig.real img { height: auto; }
+  .fig-wide { max-width: 760px; margin-top: 18px; }
+  .thumb-cap { font-size: .74rem; color: #5b676c; text-align: center; padding: 0 8px 8px; }
+  .fc-lane { fill: var(--accent-2); font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+  .fig-trio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; max-width: 760px; align-items: start; }
+  .fig-trio .fig, .fig-trio .fig.real { aspect-ratio: 1 / 1; display: grid; place-items: center; }
+  .fig-trio .fig.real img { position: static; width: 100%; height: 100%; object-fit: contain; }
+  .fig-trio-auto { grid-template-columns: 0.72fr 1.50fr 1.12fr; }
+  .fig-trio-auto .fig, .fig-trio-auto .fig.real { aspect-ratio: auto; display: block; }
+  .fig-trio-auto .fig.real img { height: auto; }
+  .fig-scatter svg { width: 92%; }
+  @media (max-width: 600px) { .fig-trio { grid-template-columns: minmax(0, 1fr); } .fig-trio .fig { aspect-ratio: auto; } }
+  /* Center figures inside the expanded project details */
+  .detail-body > .fig, .detail-body > .fig-pair, .detail-body > .fig-trio, .detail-body > .fig-side,
+  .detail-body > .flowchart, .detail-body > .fig-wide { margin-left: auto; margin-right: auto; }
   .fig-credit { font-size: .8rem; color: var(--muted); font-style: italic; margin: 6px 0 0; }
   @media (max-width: 760px) {
-    .card-main { grid-template-columns: 1fr; }
+    .card-main { grid-template-columns: minmax(0, 1fr); }
     .fig-thumb { order: -1; }
-    .detail-row { grid-template-columns: 1fr; gap: 6px; }
+    .detail-row { grid-template-columns: minmax(0, 1fr); gap: 6px; }
   }
   .chip { font-size: .8rem; font-weight: 600; padding: 4px 10px; border-radius: 6px; background: var(--accent-soft); color: var(--accent); }
   .chip:hover { text-decoration: none; opacity: .85; }
@@ -539,15 +603,110 @@
       <p>Research projects across computation, machine learning, and experiment.</p>
     </div>
     <div class="cards">
-      <article class="card" id="proj-llnl">
+      <article class="card has-details" id="proj-llnl">
         <div class="card-top"><div class="meta">Graduate Intern · Summer 2026 · LLNL CCMS</div><span class="type-badge comp">Computation &amp; ML</span></div>
-        <h3>Atomistic modeling for molten-salt reactor materials</h3>
-        <p>Integrated DFT, MD, and MLIP workflows for electrochemical interfaces relevant to molten-salt nuclear reactors.</p>
-        <ul>
-          <li>Performed convergence tests and parameter tuning for interface calculations</li>
-          <li>Ran 600+ DFT calculations on HPC systems to generate training data</li>
-          <li>Trained and evaluated constant-potential MACE (CP-MACE) models for electrochemical interface simulations</li>
-        </ul>
+        <div class="card-main">
+          <div class="card-text">
+            <h3>Atomistic modeling for molten-salt reactor materials</h3>
+            <p>Machine-learning potentials to understand chromium corrosion in molten salt reactors at the atomic scale.</p>
+            <ul>
+              <li>Built a workflow from molecular dynamics sampling to constant-potential (CP) DFT to machine-learning potential training</li>
+              <li>Fine-tuned MACE foundation models on 600 DFT configurations of molten LiF</li>
+              <li>Generated 245 CP-DFT data for a Cr–molten LiF interface and trained a CP-MACE model</li>
+            </ul>
+          </div>
+          <figure class="fig fig-thumb fig-svg">
+            <svg viewBox="0 0 260 222" role="img" aria-label="Half-cell model: a chromium atom leaves the Cr electrode as Cr2+ into molten LiF, and two electrons flow to an electron reservoir held at a fixed potential." xmlns="http://www.w3.org/2000/svg">
+              <defs><marker id="hcHead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c2662d"/></marker></defs>
+              <rect x="96" y="62" width="152" height="136" fill="#f7fbfb" stroke="#e1e6e5"/>
+              <rect x="14" y="62" width="82" height="136" rx="3" fill="#eef1f3" stroke="#d7dde1"/>
+              <circle cx="112" cy="78" r="8" fill="#8fcfcc" stroke="#4fa3a0"/><circle cx="150" cy="74" r="8" fill="#8fcfcc" stroke="#4fa3a0"/><circle cx="190" cy="80" r="8" fill="#8fcfcc" stroke="#4fa3a0"/><circle cx="228" cy="72" r="8" fill="#8fcfcc" stroke="#4fa3a0"/><circle cx="170" cy="104" r="8" fill="#8fcfcc" stroke="#4fa3a0"/><circle cx="208" cy="110" r="8" fill="#8fcfcc" stroke="#4fa3a0"/><circle cx="240" cy="124" r="8" fill="#8fcfcc" stroke="#4fa3a0"/><circle cx="150" cy="150" r="8" fill="#8fcfcc" stroke="#4fa3a0"/><circle cx="188" cy="146" r="8" fill="#8fcfcc" stroke="#4fa3a0"/><circle cx="226" cy="160" r="8" fill="#8fcfcc" stroke="#4fa3a0"/><circle cx="118" cy="176" r="8" fill="#8fcfcc" stroke="#4fa3a0"/><circle cx="166" cy="184" r="8" fill="#8fcfcc" stroke="#4fa3a0"/><circle cx="210" cy="188" r="8" fill="#8fcfcc" stroke="#4fa3a0"/><circle cx="236" cy="96" r="8" fill="#8fcfcc" stroke="#4fa3a0"/><circle cx="130" cy="92" r="4" fill="#e3e6e8" stroke="#a9b1b6"/><circle cx="172" cy="86" r="4" fill="#e3e6e8" stroke="#a9b1b6"/><circle cx="212" cy="92" r="4" fill="#e3e6e8" stroke="#a9b1b6"/><circle cx="190" cy="124" r="4" fill="#e3e6e8" stroke="#a9b1b6"/><circle cx="226" cy="138" r="4" fill="#e3e6e8" stroke="#a9b1b6"/><circle cx="136" cy="164" r="4" fill="#e3e6e8" stroke="#a9b1b6"/><circle cx="170" cy="164" r="4" fill="#e3e6e8" stroke="#a9b1b6"/><circle cx="206" cy="168" r="4" fill="#e3e6e8" stroke="#a9b1b6"/><circle cx="238" cy="184" r="4" fill="#e3e6e8" stroke="#a9b1b6"/><circle cx="112" cy="154" r="4" fill="#e3e6e8" stroke="#a9b1b6"/>
+              <circle cx="26" cy="76" r="7" fill="#6b7a86"/><circle cx="46" cy="76" r="7" fill="#6b7a86"/><circle cx="66" cy="76" r="7" fill="#6b7a86"/><circle cx="86" cy="76" r="7" fill="#6b7a86"/><circle cx="26" cy="94" r="7" fill="#6b7a86"/><circle cx="46" cy="94" r="7" fill="#6b7a86"/><circle cx="66" cy="94" r="7" fill="#6b7a86"/><circle cx="86" cy="94" r="7" fill="#6b7a86"/><circle cx="26" cy="112" r="7" fill="#6b7a86"/><circle cx="46" cy="112" r="7" fill="#6b7a86"/><circle cx="66" cy="112" r="7" fill="#6b7a86"/><circle cx="86" cy="112" r="7" fill="#6b7a86"/><circle cx="26" cy="130" r="7" fill="#6b7a86"/><circle cx="46" cy="130" r="7" fill="#6b7a86"/><circle cx="66" cy="130" r="7" fill="#6b7a86"/><circle cx="86" cy="130" r="7" fill="none" stroke="#6b7a86" stroke-dasharray="2 2"/><circle cx="26" cy="148" r="7" fill="#6b7a86"/><circle cx="46" cy="148" r="7" fill="#6b7a86"/><circle cx="66" cy="148" r="7" fill="#6b7a86"/><circle cx="86" cy="148" r="7" fill="#6b7a86"/><circle cx="26" cy="166" r="7" fill="#6b7a86"/><circle cx="46" cy="166" r="7" fill="#6b7a86"/><circle cx="66" cy="166" r="7" fill="#6b7a86"/><circle cx="86" cy="166" r="7" fill="#6b7a86"/><circle cx="26" cy="184" r="7" fill="#6b7a86"/><circle cx="46" cy="184" r="7" fill="#6b7a86"/><circle cx="66" cy="184" r="7" fill="#6b7a86"/><circle cx="86" cy="184" r="7" fill="#6b7a86"/>
+              <line x1="94" y1="130" x2="113" y2="130" stroke="#c2662d" stroke-width="2" marker-end="url(#hcHead)"/>
+              <circle cx="122" cy="130" r="7" fill="#6b7a86" stroke="#c2662d" stroke-width="2"/>
+              <text x="133" y="134" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#c2662d">Cr²⁺</text>
+              <path d="M40,62 V25 H64" fill="none" stroke="#5b676c" stroke-width="1.6"/>
+              <line x1="40" y1="56" x2="40" y2="34" stroke="#c2662d" stroke-width="2" marker-end="url(#hcHead)"/>
+              <text x="8" y="50" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#c2662d">2e⁻</text>
+              <rect x="64" y="6" width="150" height="38" rx="8" fill="#ffffff" stroke="#0f6b73"/>
+              <text x="139" y="21" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#0f6b73">Electron reservoir</text>
+              <text x="139" y="36" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#5b676c">fixed electrode potential</text>
+              <text x="55" y="215" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" fill="#5b676c">Cr electrode</text>
+              <text x="172" y="215" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" fill="#5b676c">Molten LiF</text>
+            </svg>
+            <figcaption>Half-cell model: Cr → Cr²⁺ + 2e⁻<br>at a fixed electrode potential</figcaption>
+          </figure>
+        </div>
+        <div class="card-bottom">
+          <div class="links"></div>
+          <button class="more-btn" type="button" aria-expanded="false" aria-controls="details-llnl">Read more <span class="more-arrow" aria-hidden="true">▾</span></button>
+        </div>
+        <div class="card-details" id="details-llnl" hidden>
+          <div class="detail-row">
+            <div class="detail-label">Goal</div>
+            <div class="detail-body"><p>Chromium corrodes in molten salts through an electrochemical reaction (Cr → Cr²⁺ + 2e⁻). Since simulating the full redox reaction is very difficult, this project models only the Cr oxidation half-cell at a fixed electrode potential, using constant-potential methods. To our knowledge, these methods had been developed for water-based interfaces but not for molten salts. The goal was to build constant-potential ML potentials for metal–molten salt interfaces.</p></div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Approach</div>
+            <div class="detail-body">
+              <ul>
+                <li>Generated diverse Cr(100)–molten LiF interface structures with molecular dynamics at 1200 K</li>
+                <li>Fine-tuned MACE foundation models (MPA-0, MH-1) to improve molten-salt density</li>
+                <li>Ran CP-DFT (GPAW, solvated jellium model) at 1.5–3.5 V, after convergence tests</li>
+                <li>Trained CP-MACE to predict energy, forces, and electrode potential</li>
+              </ul>
+              <div class="flowchart" role="img" aria-label="Workflow: an MD snapshot of the Cr–LiF interface (shown as an atomic model) goes into a constant-potential DFT loop. DFT gives the charge density, the Poisson equation is solved with an implicit solvent, and the electrode potential is computed. If it is not at the target potential, the number of electrons is adjusted and DFT is repeated. If it is, the energy, forces, and electron number are saved as training data for CP-MACE.">
+                <svg viewBox="0 0 790 346" xmlns="http://www.w3.org/2000/svg">
+                  <defs><marker id="fcHead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="fc-head" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+                  <rect class="fc-region" x="196" y="8" width="586" height="226" rx="14"/>
+                  <text class="fc-region-label" x="210" y="226">Constant-potential DFT loop</text>
+                  <rect class="fc-start" x="14" y="90" width="152" height="248" rx="10"/><rect x="19" y="95" width="142" height="238" rx="6" fill="#fff"/><image href="images/llnl/interface.png" x="19" y="95" width="142" height="238" preserveAspectRatio="xMidYMid meet"/>
+                  <rect class="fc-start" x="10" y="24" width="160" height="56" rx="10"/><text class="fc-text fc-text-start" x="90.0" y="49.0" text-anchor="middle">MD snapshot of</text><text class="fc-text fc-text-start" x="90.0" y="65.0" text-anchor="middle">Cr–LiF interface</text>
+                  <rect class="fc-step" x="210" y="24" width="160" height="56" rx="10"/><text class="fc-text fc-text-step" x="290.0" y="57.0" text-anchor="middle">DFT calculation</text>
+                  <rect class="fc-step" x="410" y="24" width="160" height="56" rx="10"/><text class="fc-text fc-text-step" x="490.0" y="57.0" text-anchor="middle">Charge density</text>
+                  <rect class="fc-step" x="610" y="24" width="160" height="56" rx="10"/><text class="fc-text fc-text-step" x="690.0" y="49.0" text-anchor="middle">Solve Poisson equation</text><text class="fc-text fc-text-step" x="690.0" y="65.0" text-anchor="middle">(implicit solvent)</text>
+                  <rect class="fc-step" x="610" y="144" width="160" height="56" rx="10"/><text class="fc-text fc-text-step" x="690.0" y="177.0" text-anchor="middle">Electrode potential</text>
+                  <polygon class="fc-decision" points="490,134 572,172 490,210 408,172"/><text class="fc-text" x="490" y="169" text-anchor="middle">At target</text><text class="fc-text" x="490" y="185" text-anchor="middle">potential?</text>
+                  <rect class="fc-adjust" x="210" y="144" width="160" height="56" rx="10"/><text class="fc-text fc-text-adjust" x="290.0" y="169.0" text-anchor="middle">Adjust number</text><text class="fc-text fc-text-adjust" x="290.0" y="185.0" text-anchor="middle">of electrons</text>
+                  <rect class="fc-data" x="410" y="264" width="160" height="56" rx="10"/><text class="fc-text fc-text-data" x="490.0" y="288.0" text-anchor="middle">CP-DFT data</text><text class="fc-sub" x="490.0" y="304.0" text-anchor="middle">energy · forces · electrons</text>
+                  <rect class="fc-end" x="610" y="264" width="160" height="56" rx="10"/><text class="fc-text fc-text-end" x="690.0" y="297.0" text-anchor="middle">Train CP-MACE</text>
+                  <line class="fc-arrow" x1="170" y1="52" x2="206" y2="52" marker-end="url(#fcHead)"/>
+                  <line class="fc-arrow" x1="370" y1="52" x2="406" y2="52" marker-end="url(#fcHead)"/>
+                  <line class="fc-arrow" x1="570" y1="52" x2="606" y2="52" marker-end="url(#fcHead)"/>
+                  <line class="fc-arrow" x1="690" y1="80" x2="690" y2="140" marker-end="url(#fcHead)"/>
+                  <line class="fc-arrow" x1="610" y1="172" x2="576" y2="172" marker-end="url(#fcHead)"/>
+                  <line class="fc-arrow" x1="408" y1="172" x2="374" y2="172" marker-end="url(#fcHead)"/>
+                  <line class="fc-arrow" x1="290" y1="144" x2="290" y2="84" marker-end="url(#fcHead)"/>
+                  <line class="fc-arrow" x1="490" y1="210" x2="490" y2="260" marker-end="url(#fcHead)"/>
+                  <line class="fc-arrow" x1="570" y1="292" x2="606" y2="292" marker-end="url(#fcHead)"/>
+                  <text class="fc-label" x="391" y="164" text-anchor="middle">No</text>
+                  <text class="fc-label" x="502" y="242">Yes</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Results</div>
+            <div class="detail-body">
+              <ul>
+                <li>Established and validated the full CP-DFT → CP-MACE workflow on HPC systems</li>
+                <li>CP-MACE reproduced CP-DFT forces with a 36 meV/Å error and electron numbers with a 0.035 e error across five electrode potentials</li>
+                <li>Found that dispersion (D3) correction is key for molten LiF density, and that the MACE-MH-1 foundation model (OC20 head) best captures Cr–F interactions</li>
+                <li>Identified an implicit-solvent cavity issue in CP-DFT and tested parameter fixes</li>
+              </ul>
+              <div class="fig-pair">
+                <div>
+                  <figure class="fig real"><img src="images/llnl/force.png" alt="Forces predicted by CP-MACE versus CP-DFT" loading="lazy"></figure>
+                  <div class="fig-cap">Forces</div>
+                </div>
+                <div>
+                  <figure class="fig real"><img src="images/llnl/electrons.png" alt="Electron number predicted by CP-MACE versus CP-DFT, colored by electrode potential" loading="lazy"></figure>
+                  <div class="fig-cap">Electron number, colored by electrode potential</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </article>
 
       <article class="card has-details" id="proj-mlip">
@@ -602,18 +761,65 @@
         </div>
       </article>
 
-      <article class="card" id="proj-thermal">
+      <article class="card has-details" id="proj-thermal">
         <div class="card-top"><div class="meta">Ph.D. · 2023–present</div><span class="type-badge comp">Computation &amp; ML</span></div>
-        <h3>Temperature-dependent phonons &amp; thermal transport</h3>
-        <p>High-throughput workflows that predict how heat moves at finite temperature, beyond the harmonic approximation.</p>
-        <ul>
-          <li>Computed temperature-dependent phonons for 4,669 materials using fine-tuned ML potentials</li>
-          <li>Predicted thermal conductivity with high-order anharmonicity for 773 compounds</li>
-          <li>Identified chemical and structural trends behind strong anharmonicity</li>
-        </ul>
-        <div class="links">
-          <a class="chip" href="https://doi.org/10.1002/smll.202600071">Small 2026</a>
-          <a class="chip" href="https://doi.org/10.1038/s41524-025-01920-y">npj Comput. Mater. 2025</a>
+        <div class="card-main">
+          <div class="card-text">
+            <h3>Temperature-dependent phonons &amp; thermal transport</h3>
+            <p>High-throughput workflows that predict how heat moves at finite temperature, beyond the harmonic approximation.</p>
+            <ul>
+              <li>Computed temperature-dependent phonons for 4,669 materials using fine-tuned ML potentials</li>
+              <li>Predicted thermal conductivity with high-order anharmonicity for 773 compounds</li>
+              <li>Identified chemical and structural trends behind strong anharmonicity</li>
+            </ul>
+          </div>
+          <figure class="fig real fig-thumb"><img src="images/thermal/thumb.png" alt="Phonon dispersion of Cs2RbGaF6 at 0 K and 300 K, showing temperature-dependent phonon frequencies" loading="lazy"><figcaption class="thumb-cap">Phonons at 0 K vs 300 K</figcaption></figure>
+        </div>
+        <div class="card-bottom">
+          <div class="links">
+              <a class="chip" href="https://doi.org/10.1002/smll.202600071">Small 2026</a>
+              <a class="chip" href="https://doi.org/10.1038/s41524-025-01920-y">npj Comput. Mater. 2025</a>
+            </div>
+          <button class="more-btn" type="button" aria-expanded="false" aria-controls="details-thermal">Read more <span class="more-arrow" aria-hidden="true">▾</span></button>
+        </div>
+        <div class="card-details" id="details-thermal" hidden>
+          <div class="detail-row">
+            <div class="detail-label">Goal</div>
+            <div class="detail-body"><p>The harmonic approximation used in most phonon studies breaks down at high temperature and in materials with low thermal conductivity, but including anharmonic effects requires many expensive DFT calculations. The goal was to predict temperature-dependent phonons and thermal conductivity across thousands of materials, and to find where anharmonic effects matter most.</p></div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Approach</div>
+            <div class="detail-body">
+              <ul>
+                <li>Built a high-throughput workflow for thermal conductivity that includes temperature effects on phonons, three- and four-phonon scattering, and coherent (wave-like) heat transport</li>
+                <li>Fine-tuned the M3GNet universal potential on high-quality phonon data to screen temperature-dependent phonons quickly across thousands of materials</li>
+                <li>Used matminer features and random forest models to identify the chemical and structural features behind strong anharmonicity</li>
+              </ul>
+              <div class="fig-trio fig-trio-auto">
+                <div>
+                  <figure class="fig real"><img src="images/thermal/ladder.png" alt="Ladder of theory levels for thermal conductivity, from harmonic with three-phonon scattering to self-consistent phonons with three- and four-phonon scattering" loading="lazy"></figure>
+                </div>
+                <div>
+                  <figure class="fig real"><img src="images/thermal/m3gnet.png" alt="M3GNet graph neural network fine-tuned on the MDR harmonic phonon database" loading="lazy"></figure>
+                </div>
+                <div>
+                  <figure class="fig real"><img src="images/thermal/matminer.png" alt="Matminer featurization into global and local chemical and structural features" loading="lazy"></figure>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Results</div>
+            <div class="detail-body">
+              <ul>
+                <li>Across 562 dynamically stable compounds, the standard model (harmonic + three-phonon) matched the full higher-order model for about 60% of materials; for the rest, higher-order effects changed thermal conductivity by up to 8×</li>
+                <li>Fine-tuning improved phonon accuracy about fourfold (1.09 → 0.28 THz) while keeping the speed of ML</li>
+                <li>Computed temperature-dependent phonons for 4,669 materials; anharmonic effects are strongest in materials with alkali metals and perovskite-derived structures, linked to weak bonding and large atoms</li>
+              </ul>
+              <figure class="fig real"><img src="images/thermal/results.png" alt="Thermal conductivity at three levels of theory for 12 materials, phonon frequencies from the original and fine-tuned M3GNet compared with DFT, and structure types of materials with strong temperature-dependent phonons" loading="lazy"></figure>
+            </div>
+          </div>
+          <p class="fig-credit">Figures adapted from Li, Lee et al., <i>npj Comput. Mater.</i> (2025) and Lee, Li et al., <i>Small</i> (2026).</p>
         </div>
       </article>
 
