@@ -194,6 +194,51 @@
   .card p { color: var(--muted); margin: 0 0 12px; font-size: .95rem; }
   .card ul { margin: 0 0 12px; padding-left: 18px; font-size: .93rem; }
   .card .links { margin-top: auto; display: flex; flex-wrap: wrap; gap: 8px; }
+  /* Expandable project cards */
+  .card-main { display: grid; grid-template-columns: 1fr 260px; gap: 24px; align-items: start; }
+  .card-text ul { margin-bottom: 4px; }
+  .card-bottom { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
+  .card-bottom .links { margin-top: 0; }
+  .more-btn { font: inherit; font-size: .85rem; font-weight: 600; color: var(--accent); background: none;
+              border: 1px solid var(--line); border-radius: 999px; padding: 5px 14px; cursor: pointer; }
+  .more-btn:hover { border-color: var(--accent); }
+  .more-arrow { display: inline-block; transition: transform .25s ease; }
+  .more-btn[aria-expanded="true"] .more-arrow { transform: rotate(180deg); }
+  .card-details { border-top: 1px solid var(--line); margin-top: 18px; padding-top: 18px; }
+  .detail-row { display: grid; grid-template-columns: 110px 1fr; gap: 16px; margin-bottom: 20px; }
+  .detail-row:last-of-type { margin-bottom: 8px; }
+  .detail-label { font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-2); padding-top: 3px; }
+  .detail-body p { color: var(--text); margin: 0; }
+  .detail-body ul { margin: 0 0 12px; }
+  .fig { margin: 0; position: relative; border: 1px solid var(--line); border-radius: 10px; background: #fff; overflow: hidden;
+         display: grid; place-items: center; min-height: 120px; }
+  .fig img { display: block; width: 100%; height: auto; position: relative; z-index: 1; background: #fff; }
+  .fig-thumb { aspect-ratio: 4 / 3; }
+  .fig-thumb img { position: absolute; inset: 0; height: 100%; object-fit: contain; padding: 6px; }
+  .detail-body .fig { max-width: 640px; aspect-ratio: 16 / 9; }
+  .detail-body .fig img { position: absolute; inset: 0; height: 100%; object-fit: contain; padding: 8px; }
+  .fig-ph { font-size: .8rem; color: #7a878b; text-align: center; padding: 12px; line-height: 1.5;
+            background: repeating-linear-gradient(45deg, #f6f8f8, #f6f8f8 10px, #eef2f2 10px, #eef2f2 20px);
+            position: absolute; inset: 0; display: grid; place-items: center; }
+  .fig.real { aspect-ratio: auto; min-height: 0; display: block; }
+  .fig.real img { position: static; width: 100%; height: auto; padding: 8px; cursor: zoom-in; }
+  .detail-body .fig.real { max-width: 760px; aspect-ratio: auto; }
+  .detail-body .fig.real img { position: static; height: auto; }
+  .fig-thumb.real { aspect-ratio: auto; }
+  .fig-thumb.real img { position: static; height: auto; padding: 6px; }
+  /* Click-to-enlarge viewer */
+  .lightbox { position: fixed; inset: 0; z-index: 100; background: rgba(10, 15, 17, .85); display: none;
+              align-items: center; justify-content: center; padding: 24px; cursor: zoom-out; }
+  .lightbox.open { display: flex; }
+  .lightbox img { max-width: min(1400px, 100%); max-height: 100%; background: #fff; border-radius: 10px; padding: 12px; }
+  .lightbox-close { position: absolute; top: 14px; right: 18px; color: #fff; font-size: 1.8rem; line-height: 1;
+                    background: none; border: 0; cursor: pointer; }
+  .fig-credit { font-size: .8rem; color: var(--muted); font-style: italic; margin: 6px 0 0; }
+  @media (max-width: 760px) {
+    .card-main { grid-template-columns: 1fr; }
+    .fig-thumb { order: -1; }
+    .detail-row { grid-template-columns: 1fr; gap: 6px; }
+  }
   .chip { font-size: .8rem; font-weight: 600; padding: 4px 10px; border-radius: 6px; background: var(--accent-soft); color: var(--accent); }
   .chip:hover { text-decoration: none; opacity: .85; }
   @media (max-width: 760px) { .cards { grid-template-columns: 1fr; } }
@@ -505,18 +550,55 @@
         </ul>
       </article>
 
-      <article class="card" id="proj-mlip">
+      <article class="card has-details" id="proj-mlip">
         <div class="card-top"><div class="meta">Ph.D. · 2023–present</div><span class="type-badge comp">Computation &amp; ML</span></div>
-        <h3>Universal ML potentials for phonons</h3>
-        <p>Machine-learning potentials that accelerate high-throughput calculations.</p>
-        <ul>
-          <li>Bridged an existing phonon database and graph neural networks to train a universal model on 8,000+ compounds</li>
-          <li>Built and released a DFT phonon dataset: 2,738 materials, 77 elements, 15,670 supercells</li>
-          <li>Trained a universal MACE potential with 0.18 THz phonon error and 86.2% dynamical-stability accuracy</li>
-        </ul>
-        <div class="links">
-          <a class="chip" href="https://doi.org/10.1016/j.mtphys.2025.101688">Mater. Today Phys. 2025</a>
-          <a class="chip" href="https://doi.org/10.1063/5.0199743">Appl. Phys. Lett. 2024</a>
+        <div class="card-main">
+          <div class="card-text">
+            <h3>Universal ML potentials for phonons</h3>
+            <p>Machine-learning potentials that accelerate high-throughput calculations.</p>
+            <ul>
+              <li>Bridged an existing phonon database and graph neural networks to train a universal model on 8,000+ compounds</li>
+              <li>Built and released a DFT phonon dataset: 2,738 materials, 77 elements, 15,670 supercells</li>
+              <li>Trained a universal MACE potential with 0.18 THz phonon error and 86.2% dynamical-stability accuracy</li>
+            </ul>
+          </div>
+          <figure class="fig real fig-thumb"><img src="images/mlip/thumb.png" alt="Phonon dispersions predicted by DFT and by the MACE potential for example materials" loading="lazy" data-full="images/mlip/overview.png"></figure>
+        </div>
+        <div class="card-bottom">
+          <div class="links">
+            <a class="chip" href="https://doi.org/10.1016/j.mtphys.2025.101688">Mater. Today Phys. 2025</a>
+            <a class="chip" href="https://doi.org/10.1063/5.0199743">Appl. Phys. Lett. 2024</a>
+          </div>
+          <button class="more-btn" type="button" aria-expanded="false" aria-controls="details-mlip">Read more <span class="more-arrow" aria-hidden="true">▾</span></button>
+        </div>
+        <div class="card-details" id="details-mlip" hidden>
+          <div class="detail-row">
+            <div class="detail-label">Goal</div>
+            <div class="detail-body"><p>Phonons, the vibrations of atoms in a crystal, determine whether a material is stable and how its properties change with temperature. Computing them with traditional methods takes many expensive calculations for every material. The goal was a universal ML potential that predicts phonons accurately across the periodic table, accelerating high-throughput calculations.</p></div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Approach</div>
+            <div class="detail-body">
+              <ul>
+                <li>Turned an existing phonon database into training data for a graph neural network</li>
+                <li>Generated a high-quality DFT dataset: 2,738 materials, 77 elements, 15,670 supercells</li>
+                <li>Trained a universal MACE potential to predict phonons and thermodynamic properties</li>
+              </ul>
+              <figure class="fig real"><img src="images/mlip/approach.png" alt="Workflow: converting phonon data into training data, the MACE model, and construction of the DFT training dataset" loading="lazy"></figure>
+            </div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Results</div>
+            <div class="detail-body">
+              <ul>
+                <li>0.24 THz phonon error on 400 unseen compounds, with a built-in uncertainty estimate</li>
+                <li>0.18 THz phonon error, 2.19 meV/atom free-energy error, and 86.2% dynamical-stability accuracy with MACE</li>
+                <li>High accuracy with only 6 supercell calculations per material, versus 13.3 on average (and over 100 for some materials) with the traditional method</li>
+              </ul>
+              <figure class="fig real"><img src="images/mlip/results.png" alt="Phonon frequency and free energy predicted by MACE versus DFT, and dynamical stability classification" loading="lazy"></figure>
+            </div>
+          </div>
+          <p class="fig-credit">Figures adapted from Lee et al., <i>Appl. Phys. Lett.</i> (2024) and <i>Mater. Today Phys.</i> (2025).</p>
         </div>
       </article>
 
@@ -1032,6 +1114,11 @@
   <div class="wrap">© 2026 Huiju Lee · Portland, OR</div>
 </footer>
 
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox-close" aria-label="Close">×</button>
+  <img id="lightboxImg" alt="">
+</div>
+
 <script>
   // Focus one research card when its project link is clicked
   function clearCardFocus() {
@@ -1065,6 +1152,38 @@
     if (event.key === "Escape") {
       clearCardFocus();
     }
+  });
+
+  // Read more / Show less on project cards
+  document.querySelectorAll(".more-btn").forEach(function (button) {
+    button.addEventListener("click", function () {
+      const details = document.getElementById(button.getAttribute("aria-controls"));
+      const isOpen = button.getAttribute("aria-expanded") === "true";
+      button.setAttribute("aria-expanded", isOpen ? "false" : "true");
+      details.hidden = isOpen;
+      button.firstChild.textContent = isOpen ? "Read more " : "Show less ";
+    });
+  });
+
+  // Click a figure to see it larger
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightboxImg");
+  function openLightbox(img) {
+    lightboxImg.src = img.dataset.full || img.src;
+    lightboxImg.alt = img.alt;
+    lightbox.classList.add("open");
+    lightbox.setAttribute("aria-hidden", "false");
+  }
+  function closeLightbox() {
+    lightbox.classList.remove("open");
+    lightbox.setAttribute("aria-hidden", "true");
+  }
+  document.querySelectorAll(".fig.real img").forEach(function (img) {
+    img.addEventListener("click", function () { openLightbox(img); });
+  });
+  lightbox.addEventListener("click", closeLightbox);
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") { closeLightbox(); }
   });
 
   // Light/dark mode toggle
